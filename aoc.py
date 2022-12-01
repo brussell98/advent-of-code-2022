@@ -1,3 +1,5 @@
+# Credit: https://github.com/p7g/advent-of-code/blob/2021/aoc.py
+
 import datetime as dt
 import sys
 from pathlib import Path
