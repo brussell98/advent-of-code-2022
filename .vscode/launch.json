@@ -19,9 +19,6 @@
 			"program": "${workspaceFolder}\\aoc.py",
 			"console": "integratedTerminal",
 			"justMyCode": true,
-			"args": [
-				"1",
-			]
 		}
 	]
 }

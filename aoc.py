@@ -28,7 +28,7 @@ def _main() -> None:
 
 
 def _get_challenge_date() -> dt.date:
-    today = dt.date.today()
+    today = dt.datetime.today() + dt.timedelta(hours=1)
 
     day = int(sys.argv[1] if len(sys.argv) >= 2 else today.day)
     year = int(today.year)
