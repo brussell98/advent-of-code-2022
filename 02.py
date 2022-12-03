@@ -1,5 +1,7 @@
 from aoc import *
 
+data = get_input(2)
+
 hands = {
     "A": "Rock",
     "B": "Paper",
@@ -10,9 +12,9 @@ hands = {
 }
 handValues = {"Rock": 1, "Paper": 2, "Scissors": 3}
 results = {
-    ("Scissors", "Paper"): 0,
     ("Rock", "Scissors"): 0,
     ("Paper", "Rock"): 0,
+    ("Scissors", "Paper"): 0,
     ("Rock", "Rock"): 3,
     ("Paper", "Paper"): 3,
     ("Scissors", "Scissors"): 3,
@@ -35,9 +37,9 @@ print("Total score:", score)
 # Part 2
 moves = {"X": 0, "Y": 3, "Z": 6}
 neededPlayForResult = {
-    ("Scissors", 0): "Paper",
     ("Rock", 0): "Scissors",
     ("Paper", 0): "Rock",
+    ("Scissors", 0): "Paper",
     ("Rock", 3): "Rock",
     ("Paper", 3): "Paper",
     ("Scissors", 3): "Scissors",

@@ -1,55 +1,45 @@
-# Credit: https://github.com/p7g/advent-of-code/blob/2021/aoc.py
+# Modified from: https://github.com/p7g/advent-of-code/blob/2021/aoc.py
 
-import datetime as dt
-import sys
 from pathlib import Path
-import typing as t
+import requests
 
-data: str
-
-__all__ = ["data"]
+__all__ = ["get_input", "chunk"]
 
 
-def __getattr__(name: str) -> t.Any:
-    if name == "data":
-        return _fetch_input()
-    else:
-        raise AttributeError(name)
+def chunk(arr: list, size: int):
+    return [arr[i : i + size] for i in range(0, len(arr), size)]
 
 
-def _main() -> None:
-    date = _get_challenge_date()
-    script_path = _get_challenge_script_path(date)
-    with open(script_path, "r") as f:
-        script_src = f.read()
-
-    code = compile(source=script_src, filename=script_path, mode="exec")
-    exec(code, {}, {})
-
-
-def _get_challenge_date() -> dt.date:
-    today = dt.datetime.today() + dt.timedelta(hours=1)
-
-    day = int(sys.argv[1] if len(sys.argv) >= 2 else today.day)
-    year = int(today.year)
-
-    return dt.date(year=year, month=12, day=day)
-
-
-def _get_challenge_script_path(date: dt.date) -> str:
-    return str(Path(__file__).parent / "days" / f"{date.day:02}.py")
-
-
-def _fetch_input():
-    date = _get_challenge_date()
-    input_path = _get_challenge_input_path(date)
-    with open(input_path, "r") as f:
+def _read_session() -> str:
+    with open(".aoc-session", "r") as f:
         return f.read().strip()
 
 
-def _get_challenge_input_path(date: dt.date) -> str:
-    return str(Path(__file__).parent / "input" / f"{date.day:02}.txt")
+def _fetch_input(day: int) -> str:
+    req = requests.get(
+        f"https://adventofcode.com/2022/day/{day}/input",
+        cookies={"session": _read_session()},
+    )
+    req.raise_for_status()
+    return req.content.decode("ascii")
 
 
-if __name__ == "__main__":
-    _main()
+def _cache_input(day: int, aoc_input: str) -> None:
+    with open(_get_input_path(day), "w") as f:
+        f.write(aoc_input)
+
+
+def _get_input_path(day: int) -> str:
+    return str(Path(__file__).parent / "input" / f"{day:02}.txt")
+
+
+def get_input(day: int):
+    try:
+        with open(_get_input_path(day), "r") as f:
+            return f.read().strip()
+    except FileNotFoundError:
+        pass
+
+    input_data = _fetch_input(day)
+    _cache_input(day, input_data)
+    return input_data

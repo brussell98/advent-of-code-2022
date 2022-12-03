@@ -12,13 +12,5 @@
 			"console": "integratedTerminal",
 			"justMyCode": true
 		},
-		{
-			"name": "Python: AOC Runner",
-			"type": "python",
-			"request": "launch",
-			"program": "${workspaceFolder}\\aoc.py",
-			"console": "integratedTerminal",
-			"justMyCode": true,
-		}
 	]
 }
