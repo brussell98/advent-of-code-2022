@@ -23,7 +23,7 @@ def parse_input() -> list[list[deque], list[list[int]]]:
     for box_line in boxes_parsed:
         for i in range(0, len(box_line)):
             if box_line[i] != " ":
-                queues[i].append(box_line[i])
+                queues[i].appendleft(box_line[i])
 
     return [queues, moves_parsed]
 
@@ -33,9 +33,9 @@ def part1():
 
     for [num, f, t] in moves:
         for _ in range(0, num):
-            boxes[t - 1].appendleft(boxes[f - 1].popleft())
+            boxes[t - 1].append(boxes[f - 1].pop())
 
-    return "".join([q.popleft() for q in boxes])
+    return "".join([q.pop() for q in boxes])
 
 
 print("Part 1:", part1())
@@ -47,10 +47,10 @@ def part2():
     for [num, f, t] in moves:
         q = deque()
         for _ in range(0, num):
-            q.appendleft(boxes[f - 1].popleft())
-        boxes[t - 1].extendleft(q)
+            q.appendleft(boxes[f - 1].pop())
+        boxes[t - 1].extend(q)
 
-    return "".join([q.popleft() for q in boxes])
+    return "".join([q.pop() for q in boxes])
 
 
 print("Part 2:", part2())
