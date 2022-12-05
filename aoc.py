@@ -36,7 +36,7 @@ def _get_input_path(day: int) -> str:
 def get_input(day: int):
     try:
         with open(_get_input_path(day), "r") as f:
-            return f.read().strip()
+            return f.read()
     except FileNotFoundError:
         pass
 
