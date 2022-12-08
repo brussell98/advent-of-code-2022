@@ -3,7 +3,7 @@
 from pathlib import Path
 import requests
 
-__all__ = ["get_input", "chunk", "Graph"]
+__all__ = ["get_input", "chunk", "flatten", "Graph"]
 
 
 def chunk(arr: list, size: int):
@@ -49,6 +49,15 @@ def get_input(day: int, example=False):
     input_data = _fetch_input(day)
     _cache_input(day, input_data)
     return input_data
+
+
+def flatten(array: list):
+    flat_list = []
+    for sublist in array:
+        for item in sublist:
+            flat_list.append(item)
+
+    return flat_list
 
 
 # ChatGPT
