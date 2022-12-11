@@ -45,7 +45,6 @@ def part2():
 
     screen = ["."] * (40 * 6)
 
-    cycle = 0
     for cycle in range(0, len(screen)):
         pos = cycle % 40
 
