@@ -1,7 +1,8 @@
 from aoc import *
 import re
+import numpy
 
-data = get_input(11, example=True)
+data = get_input(11, example=False)
 
 
 def part1():
@@ -68,8 +69,9 @@ def part2():
             ]
         )
 
+    lcm = int(numpy.lcm.reduce(monkey_test))
+
     for round in range(0, 10000):
-        print(round)
         for i in range(0, len(monkeys)):
             monkey = monkeys[i]
             for _ in range(0, len(monkey_items[i])):
@@ -88,6 +90,8 @@ def part2():
                     else:
                         item += int(op[1])
 
+                item %= lcm
+
                 test = monkey_test[i]
                 targets = monkey_target[i]
                 if item % test == 0:
@@ -97,7 +101,6 @@ def part2():
 
     monkey_inspections.sort(reverse=True)
 
-    print(monkey_inspections)
     return monkey_inspections[0] * monkey_inspections[1]
 
 
