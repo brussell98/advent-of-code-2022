@@ -2,6 +2,7 @@
 
 from pathlib import Path
 import requests
+from collections import deque
 
 __all__ = ["get_input", "chunk", "flatten", "Graph"]
 
@@ -72,7 +73,8 @@ class Graph:
     def add_edge(self, v1, v2):
         if v1 in self.vertices and v2 in self.vertices:
             self.vertices[v1].add(v2)
-            self.vertices[v2].add(v1)
+            # Commented out for directed
+            # self.vertices[v2].add(v1)
 
     def add_vertices_and_edge(self, v1, v2):
         self.add_vertex(v1)
@@ -80,24 +82,43 @@ class Graph:
 
         self.add_edge(v1, v2)
 
-    def distance(self, v1, v2):
-        if v1 not in self.vertices or v2 not in self.vertices:
-            # One or both vertices are not in the graph
-            return float("inf")
+    def shortest_path(self, start, end):
+        if start not in self.vertices or end not in self.vertices:
+            return []
 
-        # Use a breadth-first search to find the distance between the vertices
-        visited = set()
-        queue = [(v1, 0)]
+        # Use a queue to store the vertices we want to visit
+        queue = deque([start])
+
+        # Keep track of the previous vertex for each vertex, so we can
+        # reconstruct the path when we reach the end
+        prev = {start: None}
+
         while queue:
-            curr_vertex, curr_distance = queue.pop(0)
-            if curr_vertex == v2:
-                # We have reached the second vertex, so we can return the distance
-                return curr_distance
-            visited.add(curr_vertex)
-            for neighbor in self.vertices[curr_vertex]:
-                if neighbor not in visited:
-                    # Add the neighbor to the queue to be visited
-                    queue.append((neighbor, curr_distance + 1))
+            vertex = queue.popleft()
 
-        # If we reach here, then there is no path between the two vertices
-        return float("inf")
+            # Stop searching when we reach the end
+            if vertex == end:
+                break
+
+            # Add all the neighbors of this vertex to the queue
+            for neighbor in self.vertices[vertex]:
+                if neighbor not in prev:
+                    prev[neighbor] = vertex
+                    queue.append(neighbor)
+
+        # At this point, either we reached the end and `prev` contains the
+        # shortest path, or there is no path and `prev` is empty
+        if prev:
+            # Reconstruct the shortest path
+            path = [end]
+            cur = end
+            while cur != start:
+                cur = prev[cur]
+                path.append(cur)
+
+            # Reverse the path and return it
+            path.reverse()
+            return path
+
+        # If we didn't reach the end, there is no path
+        return []
