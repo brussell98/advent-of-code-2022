@@ -52,13 +52,15 @@ def get_input(day: int, example=False):
     return input_data
 
 
-def flatten(array: list):
-    flat_list = []
-    for sublist in array:
-        for item in sublist:
-            flat_list.append(item)
+def flatten(array):
+    a = []
+    for i in array:
+        if isinstance(i, list):
+            a.append(flatten(i))
+        else:
+            a.append(i)
 
-    return flat_list
+    return a
 
 
 # ChatGPT
